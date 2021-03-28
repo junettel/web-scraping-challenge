@@ -76,8 +76,8 @@ def mars_scrape():
 	image_url_base = 'https://data-class-jpl-space.s3.amazonaws.com/JPL_Space/'
 	image_url = f'{image_url_base}index.html'
 	browser.visit(image_url)
-	browser.visit(url) 
 	time.sleep(sleep_time)
+	
 	browser.find_by_css('.fancybox').click() 
 	time.sleep(sleep_time)
 	browser.click_link_by_partial_text('more info')
