@@ -155,4 +155,4 @@ def mars_scrape():
 
 	print("Web scrape complete!")
 
-	return mars_scrape_data_dict 
+	return mars_scrape_data_dict
