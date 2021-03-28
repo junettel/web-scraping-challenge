@@ -29,50 +29,60 @@ def init_browser():
 	browser = Browser('chrome', **executable_path, headless=False)
 
 
-def scrape():
+def mars_scrape():
 
 	browser = init_browser()
 
 	mars_scrape_data_dict = {}
-	sleep_timer = 2
+	sleep_time = 2
 
 	# NASA Mars News
-	
-	title_list=[]
-	txt_list=[]
-	link_list=[]
 
-	url = "https://mars.nasa.gov/news/"
-	browser.visit(url)
-	time.sleep(sleep_timer)
-	html = browser.html 
-	soup = bs(html,"html.parser")
-	results = soup.find_all('li', class_="slide")
+	news_title_list = []
+	news_p_list = []
+	news_href_list = []
 
-	for result in results:
+	news_url = "https://mars.nasa.gov/news/"
+	browser.visit(news_url)
+	time.sleep(sleep_time)
+
+	html = browser.html
+	soup = bs(html, 'html.parser')
+
+	# News articles iterable list
+	articles = soup.find_all('li', class_='slide')
+
+	for article in articles:
 		try:
-			title_list.append(result.find(class_="content_title").text)
-			txt_list.append(result.find(class_="rollover_description_inner").text)
-			link_list.append("https://mars.nasa.gov" + result.a['href'])
+			# Scrape title, paragraph text, link href
+			news_title = article.find(class_='content_title').text
+			news_p = article.find(class_='article_teaser_body').text
+			news_href = article.find('a')['href']
 
-		except AttributeError as e: # Error handling
-			print(e)
+			# Append variable lists with each iteration
+			news_title_list.append(news_title)
+			news_p_list.append(news_p)
+			news_href_list.append(news_href)
 
-	mars_scrape_data_dict['news_title'] = title_list[0] 
-	mars_scrape_data_dict['news_paragraph'] = txt_list[0]
-	mars_scrape_data_dict['news_url'] = link_list[0]
+		except:
+			print('*** Error! ***')
 
+	mars_scrape_data_dict['news_title'] = news_title_list[0] 
+	mars_scrape_data_dict['news_paragraph'] = news_p_list[0]
+	mars_scrape_data_dict['news_url'] = news_href_list[0]
 
-	# JPL Mars Space Images
+	# JPL Mars Space Images - Featured Image
 
-	url = "https://www.jpl.nasa.gov/spaceimages/?search=&category=Mars" 
+	image_url_base = 'https://data-class-jpl-space.s3.amazonaws.com/JPL_Space/'
+	image_url = f'{image_url_base}index.html'
+	browser.visit(image_url)
 	browser.visit(url) 
-	time.sleep(sleep_timer) 
+	time.sleep(sleep_time)
 	browser.find_by_css('.fancybox').click() 
-	time.sleep(sleep_timer) 
+	time.sleep(sleep_time)
 	browser.click_link_by_partial_text('more info')
 	#browser.links.find_by_partial_text('more info').click() 
-	time.sleep(sleep_timer) 
+	time.sleep(sleep_time)
 	html = browser.html 
 	soup = bs(html,"html.parser")
 	results = soup.find_all(class_="download_tiff")
@@ -87,7 +97,7 @@ def scrape():
 	import re
 	url = "https://twitter.com/MarsWxReport" 
 	browser.visit(url)
-	time.sleep(sleep_timer) 
+	time.sleep(sleep_time) 
 	html = browser.html 
 	soup = bs(html,"html.parser")
 	mars_weather=soup.find(text=re.compile("InSight sol")) 
@@ -118,10 +128,10 @@ def scrape():
 	## Cerberus
 	url = "https://astrogeology.usgs.gov/search/results?q=hemisphere+enhanced&k1=target&v1=Mars" 
 	browser.visit(url)
-	time.sleep(sleep_timer) 
+	time.sleep(sleep_time)
 	browser.click_link_by_partial_text('Cerberus')
 	#browser.links.find_by_partial_text('Cerberus').click() 
-	time.sleep(sleep_timer) 
+	time.sleep(sleep_time)
 	html = browser.html 
 	soup = bs(html,"html.parser")
 
@@ -134,10 +144,10 @@ def scrape():
 	browser.back() 
 
 	## Schiaparelli
-	time.sleep(sleep_timer) 
+	time.sleep(sleep_time)
 	browser.click_link_by_partial_text('Schiaparelli')
 	#browser.links.find_by_partial_text('Schiaparelli').click() 
-	time.sleep(sleep_timer) 
+	time.sleep(sleep_time)
 	html = browser.html 
 	soup = bs(html,"html.parser")
 
@@ -150,10 +160,10 @@ def scrape():
 	browser.back() 
 
 	## Syrtis
-	time.sleep(sleep_timer) 
+	time.sleep(sleep_time)
 	browser.click_link_by_partial_text('Syrtis')
 	#browser.links.find_by_partial_text('Syrtis').click() 
-	time.sleep(sleep_timer) 
+	time.sleep(sleep_time)
 	html = browser.html 
 	soup = bs(html,"html.parser")
 
@@ -166,10 +176,10 @@ def scrape():
 	browser.back() 
 
 	## Valles
-	time.sleep(sleep_timer) 
+	time.sleep(sleep_time)
 	browser.click_link_by_partial_text('Valles')
 	#browser.links.find_by_partial_text('Valles').click() 
-	time.sleep(sleep_timer) 
+	time.sleep(sleep_time)
 	html = browser.html 
 	soup = bs(html,"html.parser")
 
