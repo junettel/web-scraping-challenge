@@ -7,7 +7,6 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Mission to Mars</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <!-- <link rel="stylesheet" href="../stylesheets/style.css"> -->
 </head>
 
 <body>
@@ -19,38 +18,32 @@
     <div class = "row row-grid">
       <div class = "col-md-12">
         <div class = "col-md-12">
-          <h2><strong>Latest Mars News:</strong></h2>
-          <h4><strong>{{ mars_data_123.news_title }}</strong></h4>
-          <p>{{ mars_data_123.news_p }}</p>
+          <h2><strong>Latest Mars News</strong></h2>
+          <h4><strong>{{ mars.news_title }}</strong></h4>
+          <p>{{ mars.news_paragraph }}</p>
           <hr>
         </div>
       <div class = "col-md-12">  
         <div class = "col-md-7">
-          <img src="{{ mars_data_123.featured_image_url }}" alt="Mars" align="left" width = 100%>
+          <h2><strong>Featured Mars Image</strong></h2>
+          <img src="{{ mars.featured_image_url }}" alt="Mars" align="left" width = 100%>
         </div>
 
-        <div class = "col-md-5">
-          <h2><strong>Current Weather on Mars:</strong></h2>
-        </div>
-        <div class = "col-md-5">
-          <p>{{ mars_data_123.mars_weather }}</p>
-          <hr>
+        <div class = "col-md-5"> 
+          <h3><strong>Mars Facts</strong></h3>
         </div>
         <div class = "col-md-5"> 
-          <h2><strong>Mars Facts:</strong></h2>
-        </div>
-        <div class = "col-md-5"> 
-          <p>{{mars_data_123.mars_facts_table_html | safe}}</p>
+          <p>{{mars.mars_table_html | safe}}</p>
           <hr>
         </div>
       </div>
       </div>
       <div class = "col-md-12">
         <hr>
-        <h1><strong>Mars Hemispheres:</strong></h1>
+        <h1><strong>Mars Hemispheres</strong></h1>
       </div>
       <div class = "col-md-12">   
-          {% for x in mars_data_123.list_of_img_urls %}
+          {% for x in mars.hemisphere_image_urls %}
             <div class = "col-md-6">
               <img src = "{{x.img_url}}" width=90%>
               <h4><strong>{{x.title}}</strong></h4>
@@ -59,10 +52,7 @@
       </div>
     </div>        
   </div>
-    <!-- <script src="https://code.jquery.com/jquery-3.2.1.js" integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE=" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-      crossorigin="anonymous">
-    </script> -->
+
 </body>
 
 </html>

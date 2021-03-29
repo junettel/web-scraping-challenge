@@ -1,7 +1,7 @@
 import pandas as pd
+from webdriver_manager.chrome import ChromeDriverManager
 from splinter import Browser
 from bs4 import BeautifulSoup as bs
-from webdriver_manager.chrome import ChromeDriverManager
 import time
 
 
@@ -25,16 +25,17 @@ Use MongoDB with Flask templating to create a new HTML page that displays all of
 
 
 def init_browser():
-	executable_path = {'executable_path': ChromeDriverManager().install()}
-	browser = Browser('chrome', **executable_path, headless=False)
+	# Set up Splinter
+    executable_path = {'executable_path': ChromeDriverManager().install()}
+    return Browser('chrome', **executable_path, headless=False)
 
 
-def mars_scrape():
+def scrape_mars_data():
 
 	browser = init_browser()
 
 	mars_scrape_data_dict = {}
-	sleep_time = 2
+	sleep_time = 1
 
 	# ----- NASA Mars News ----- #
 
@@ -62,12 +63,12 @@ def mars_scrape():
 			# Append variable lists with each iteration
 			news_title_list.append(news_title)
 			news_p_list.append(news_p)
-			news_href_list.append(news_href)
+			news_href_list.append('https://mars.nasa.gov' + news_href)
 
 		except:
 			print('*** Error! ***')
 
-	# Result to mongoDB dictionary
+	# Add first article results to MongoDB dictionary
 	mars_scrape_data_dict['news_title'] = news_title_list[0] 
 	mars_scrape_data_dict['news_paragraph'] = news_p_list[0]
 	mars_scrape_data_dict['news_url'] = news_href_list[0]
@@ -91,7 +92,7 @@ def mars_scrape():
 	featured_image_url = image_url_base + featured_image
 	time.sleep(sleep_time)
 
-	# Result to mongoDB dictionary
+	# Results to MongoDB dictionary
 	mars_scrape_data_dict['featured_image_url'] = featured_image_url
 
 
@@ -107,8 +108,8 @@ def mars_scrape():
 	mars_table_html = mars_table_df.to_html()
 	mars_table_html = mars_table_html.replace('\n', '')
 
-	# Result to mongoDB dictionary
-	mars_scrape_data_dict['facts'] = mars_table_html
+	# Results to MongoDB dictionary
+	mars_scrape_data_dict['mars_table_html'] = mars_table_html
 
 
 	# ----- Mars Hemispheres ----- #
@@ -148,8 +149,9 @@ def mars_scrape():
 		hemisphere_image_urls.append({'title': title, 'img_url': img_url})
 		time.sleep(sleep_time)
 
-	# Result to mongoDB dictionary
-	mars_scrape_data_dict["hemisphere_image_url"] = hemisphere_image_urls
+		# Results to MongoDB dictionary
+		mars_scrape_data_dict["hemisphere_image_urls"] = hemisphere_image_urls
+
 
 	browser.quit()
 
