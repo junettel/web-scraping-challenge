@@ -7,9 +7,6 @@ app = Flask(__name__)
 # Use PyMongo to establish Mongo connection
 mongo = PyMongo(app, uri="mongodb://localhost:27017/mars_app")
 
-# Declare the database
-db = client.mars_scrape_db
-
 
 @app.route("/")
 def home():
